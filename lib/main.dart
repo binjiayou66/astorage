@@ -50,7 +50,7 @@ class App extends StatelessWidget {
     if (Platform.isIOS) {
       path = (await getApplicationDocumentsDirectory()).path;
     } else {
-      path = (await getDownloadsDirectory()).path;
+      path = (await getApplicationSupportDirectory()).path;
     }
     path = '$path/upload/';
     final directory = Directory(path);

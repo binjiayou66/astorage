@@ -16,6 +16,8 @@ class UploadPage extends StatefulWidget {
 }
 
 class _UploadPageState extends State<UploadPage> {
+  final int _port = 8080;
+  String _ipAddress;
   HttpServer _server;
   String get _browserUri =>
       (_server?.address?.host ?? '') + ':' + (_server?.port?.toString() ?? '');
@@ -25,6 +27,11 @@ class _UploadPageState extends State<UploadPage> {
   void initState() {
     super.initState();
 
+    initStateNext();
+  }
+
+  Future<void> initStateNext() async {
+    _ipAddress = await _getIPAddress();
     _startServer();
   }
 
@@ -141,12 +148,25 @@ class _UploadPageState extends State<UploadPage> {
     );
   }
 
+  Future<String> _getIPAddress() async {
+    for (var interface in await NetworkInterface.list()) {
+      if (interface.addresses.length > 0)
+        return interface.addresses.first.address;
+    }
+    return null;
+  }
+
   Future<void> _startServer() async {
+    if (_ipAddress == null) {
+      AToast.showText('开启服务失败');
+      return;
+    }
     try {
-      _server = await HttpServer.bind(InternetAddress.loopbackIPv4, 8080);
+      _server = await HttpServer.bind(_ipAddress, 8080);
       if (mounted) setState(() {});
     } catch (e) {
-      print('开启服务失败: $e');
+      AToast.showText('开启服务失败');
+      return;
     }
     await for (var request in _server) {
       switch (request.uri.toString()) {
