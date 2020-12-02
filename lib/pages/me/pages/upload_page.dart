@@ -1,10 +1,14 @@
 import 'dart:io';
 
+import 'package:astorage/defines/acolors.dart';
+import 'package:astorage/defines/afont.dart';
 import 'package:astorage/defines/ahtml.dart';
+import 'package:astorage/utils/aglobal.dart';
+import 'package:astorage/utils/atoast.dart';
 import 'package:astorage/widgets/aappbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mime/mime.dart';
-import 'package:path_provider/path_provider.dart';
 
 class UploadPage extends StatefulWidget {
   @override
@@ -13,9 +17,9 @@ class UploadPage extends StatefulWidget {
 
 class _UploadPageState extends State<UploadPage> {
   HttpServer _server;
-  String _storagePath;
   String get _browserUri =>
       (_server?.address?.host ?? '') + ':' + (_server?.port?.toString() ?? '');
+  List<String> _savedFiles = [];
 
   @override
   void initState() {
@@ -34,11 +38,104 @@ class _UploadPageState extends State<UploadPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AAppBar(
-        textTitle: '上传',
+        textTitle: '文件上传',
       ),
       body: Container(
-        child: Center(
-          child: Text('请在电脑中打开以下地址\n $_browserUri'),
+        color: AColors.background,
+        child: Column(
+          children: [
+            SizedBox(height: 10),
+            Row(
+              children: [
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
+                      Clipboard.setData(ClipboardData(text: _browserUri));
+                      AToast.showText('地址复制成功');
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: AColors.white,
+                      ),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '请在电脑中打开以下地址（点击复制）',
+                            style: TextStyle(
+                              color: AColors.textMain,
+                              fontSize: AFontSize.body2,
+                            ),
+                          ),
+                          Text(
+                            '\n$_browserUri',
+                            style: TextStyle(
+                              color: AColors.textMain,
+                              fontSize: AFontSize.body1,
+                              fontWeight: AFontWeight.bold,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 10),
+            if (_savedFiles.length > 0)
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: AColors.white,
+                        border: Border(
+                          bottom: BorderSide(
+                            color: AColors.divider,
+                            width: 0.5,
+                          ),
+                        ),
+                      ),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                      child: Text(
+                        '本次已成功保存以下文件：',
+                        style: TextStyle(
+                          color: AColors.textMain,
+                          fontSize: AFontSize.body2,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            Expanded(
+              child: ListView.builder(
+                itemBuilder: _itemBuilder,
+                itemCount: _savedFiles.length,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _itemBuilder(BuildContext context, int index) {
+    if (index >= _savedFiles.length) return Container();
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+      decoration: BoxDecoration(
+        color: AColors.white,
+      ),
+      child: Text(
+        _savedFiles[index],
+        style: TextStyle(
+          color: AColors.textMain,
+          fontSize: AFontSize.body2,
         ),
       ),
     );
@@ -98,23 +195,19 @@ class _UploadPageState extends State<UploadPage> {
       final contentDisposition = item.headers['content-disposition'];
       final fileName =
           RegExp(r'filename="([^"]*)"').firstMatch(contentDisposition).group(1);
-      final filePath = (await _savePath()) + fileName;
+      final filePath = AGlobal.fileSavePath + fileName;
       final content = await item.toList();
-      await File(filePath).writeAsBytes(content[0]);
-      print('file save done! $filePath');
+      final file = File(filePath);
+      if (await file.exists()) {
+        AToast.showText('同名文件已存在');
+      } else {
+        await file.writeAsBytes(content[0]);
+        print('file save done! $filePath');
+        _savedFiles.add(fileName);
+        if (mounted) setState(() {});
+      }
     }
 
     await request.response.close();
-  }
-
-  Future<String> _savePath() async {
-    if (_storagePath == null) {
-      if (Platform.isIOS) {
-        _storagePath = (await getApplicationDocumentsDirectory()).path;
-      } else {
-        _storagePath = (await getDownloadsDirectory()).path;
-      }
-    }
-    return _storagePath + '/';
   }
 }

@@ -1,8 +1,11 @@
 import 'package:astorage/defines/acolors.dart';
 import 'package:astorage/defines/afont.dart';
+import 'package:astorage/defines/avariables.dart';
 import 'package:astorage/pages/home/home_page.dart';
 import 'package:astorage/pages/me/me_page.dart';
+import 'package:astorage/provider/home_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class TabPage extends StatefulWidget {
   @override
@@ -91,6 +94,18 @@ class _TabPageState extends State<TabPage> {
   }
 
   void _onTap(int index) async {
+    switch (index) {
+      case AVariables.homeIndex:
+        {
+          final homeProvider =
+              Provider.of<HomeProvider>(context, listen: false);
+          homeProvider.refresh();
+          break;
+        }
+      case AVariables.meIndex:
+        break;
+      default:
+    }
     setState(() {
       _currentIndex = index;
     });
