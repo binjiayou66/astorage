@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'package:astorage/pages/developer/developer_page.dart';
 import 'package:astorage/pages/me/pages/upload_page.dart';
 import 'package:astorage/utils/arouter.dart';
 import 'package:flutter/material.dart';
@@ -11,14 +10,9 @@ class MePresenter {
         ARouter.push(context, page: UploadPage());
         break;
       case 1:
-        _test();
+        ARouter.push(context, page: DeveloperPage());
         break;
       default:
     }
-  }
-
-  void _test() async {
-    final file = File('../../../images/1606893526476.png');
-    print('file: ${await file.exists()}');
   }
 }

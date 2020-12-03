@@ -13,8 +13,8 @@ class MePage extends StatefulWidget {
 class _MePageState extends State<MePage> {
   final int _excessRowCount = 1;
   final List<IndexRowModel> _rowDatas = [
-    IndexRowModel('上传', Icons.upload_file),
-    IndexRowModel('测试', Icons.text_fields),
+    IndexRowModel('上传文件', Icons.upload_file),
+    IndexRowModel('开发者选项', Icons.text_fields),
   ];
   final MePresenter _presenter = MePresenter();
 
