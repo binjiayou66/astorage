@@ -5,8 +5,9 @@ import 'package:flutter_filereader/flutter_filereader.dart';
 
 class OfficeBrowser extends StatefulWidget {
   final String url;
+  final String Function() titleDelegate;
 
-  OfficeBrowser(this.url, {Key key}) : super(key: key);
+  OfficeBrowser(this.url, {this.titleDelegate, Key key}) : super(key: key);
 
   @override
   _OfficeBrowserState createState() => _OfficeBrowserState();
@@ -22,7 +23,7 @@ class _OfficeBrowserState extends State<OfficeBrowser> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AAppBar(
-        textTitle: '',
+        textTitle: widget.titleDelegate?.call() ?? '',
       ),
       body: Container(
         color: AColors.white,

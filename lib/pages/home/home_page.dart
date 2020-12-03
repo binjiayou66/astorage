@@ -5,6 +5,7 @@ import 'package:astorage/defines/afile_types.dart';
 import 'package:astorage/file_browsers/audio_browser.dart';
 import 'package:astorage/file_browsers/image_browser.dart';
 import 'package:astorage/file_browsers/office_browser.dart';
+import 'package:astorage/file_browsers/video_browser.dart';
 import 'package:astorage/provider/home_provider.dart';
 import 'package:astorage/utils/aglobal.dart';
 import 'package:astorage/utils/arouter.dart';
@@ -98,9 +99,23 @@ class _HomePageState extends State<HomePage> with RouteAware {
         ),
       );
     } else if (AFileTypes.isAudio(type)) {
-      ARouter.push(context, page: AudioBrowser(file.path));
+      ARouter.push(context,
+          page: AudioBrowser(
+            file.path,
+            titleDelegate: () => file.fileName,
+          ));
     } else if (AFileTypes.isOffice(type)) {
-      ARouter.push(context, page: OfficeBrowser(file.path));
+      ARouter.push(context,
+          page: OfficeBrowser(
+            file.path,
+            titleDelegate: () => file.fileName,
+          ));
+    } else if (AFileTypes.isVideo(type)) {
+      ARouter.push(context,
+          page: VideoBrowser(
+            file.path,
+            titleDelegate: () => file.fileName,
+          ));
     } else {
       AToast.showText('暂不支持浏览的文件类型');
     }

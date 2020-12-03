@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 
 class AudioBrowser extends StatefulWidget {
   final String url;
+  final String Function() titleDelegate;
 
-  AudioBrowser(this.url, {Key key}) : super(key: key);
+  AudioBrowser(this.url, {this.titleDelegate, Key key}) : super(key: key);
 
   @override
   _AudioBrowserState createState() => _AudioBrowserState();
@@ -32,7 +33,7 @@ class _AudioBrowserState extends State<AudioBrowser> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AAppBar(
-        textTitle: '听听音乐吧',
+        textTitle: widget.titleDelegate?.call() ?? '听听音乐吧',
       ),
       body: Container(),
     );

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:astorage/defines/acolors.dart';
 import 'package:astorage/defines/afont.dart';
 import 'package:astorage/defines/ahtml.dart';
+import 'package:astorage/defines/avariables.dart';
 import 'package:astorage/utils/aglobal.dart';
 import 'package:astorage/utils/atoast.dart';
 import 'package:astorage/widgets/aappbar.dart';
@@ -150,8 +151,10 @@ class _UploadPageState extends State<UploadPage> {
 
   Future<String> _getIPAddress() async {
     for (var interface in await NetworkInterface.list()) {
-      if (interface.addresses.length > 0)
-        return interface.addresses.first.address;
+      for (var item in interface.addresses) {
+        if (item.address.startsWith(AVariables.lanIPPrefix))
+          return item.address;
+      }
     }
     return null;
   }

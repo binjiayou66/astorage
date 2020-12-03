@@ -4,4 +4,7 @@ class AVariables {
 
   /// meIndex 1
   static const int meIndex = 1;
+
+  /// 局域网IP地址头
+  static const String lanIPPrefix = '192.168.';
 }

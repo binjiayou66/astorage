@@ -61,4 +61,37 @@ class AFileTypes {
   static bool isOffice(String type) {
     return officeTypes.contains(type.toLowerCase());
   }
+
+  // video
+  static const String avi = 'avi';
+  static const String wmv = 'wmv';
+  static const String mpeg = 'mpeg';
+  static const String mp4 = 'mp4';
+  static const String m4v = 'm4v';
+  static const String mov = 'mov';
+  static const String asf = 'asf';
+  static const String flv = 'flv';
+  static const String f4v = 'f4v';
+  static const String rmvb = 'rmvb';
+  static const String rm = 'rm';
+  static const String gp3 = '3gp';
+  static const String vob = 'vob';
+  static const List<String> videoTypes = [
+    avi,
+    wmv,
+    mpeg,
+    mp4,
+    m4v,
+    mov,
+    asf,
+    flv,
+    f4v,
+    rmvb,
+    rm,
+    gp3,
+    vob,
+  ];
+  static bool isVideo(String type) {
+    return videoTypes.contains(type.toLowerCase());
+  }
 }
