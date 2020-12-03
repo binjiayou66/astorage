@@ -43,8 +43,17 @@ class _HomePageState extends State<HomePage> with RouteAware {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AAppBar(
-        textTitle: '首页',
+        textTitle: '文件',
         noLeading: true,
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.sort,
+              color: AColors.textMain,
+            ),
+            onPressed: () {},
+          )
+        ],
       ),
       body: Consumer<HomeProvider>(
         builder: (context, homeProvider, child) {
@@ -78,11 +87,21 @@ class _HomePageState extends State<HomePage> with RouteAware {
     return InkWell(
       onTap: () => _onTapFile(file),
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-        decoration: BoxDecoration(
-          color: AColors.white,
+        color: AColors.white,
+        padding: EdgeInsets.only(left: 12),
+        child: Container(
+          padding: EdgeInsets.only(right: 12, top: 16, bottom: 16),
+          decoration: BoxDecoration(
+            color: AColors.white,
+            border: Border(
+              bottom: BorderSide(
+                width: 0.5,
+                color: AColors.divider,
+              ),
+            ),
+          ),
+          child: Text(file.fileName),
         ),
-        child: Text(file.fileName),
       ),
     );
   }

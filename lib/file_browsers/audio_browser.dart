@@ -23,9 +23,8 @@ class _AudioBrowserState extends State<AudioBrowser> {
   }
 
   @override
-  void dispose() async {
-    await _player.release();
-    await _player.dispose();
+  void dispose() {
+    _player.release().then((value) => _player.dispose());
     super.dispose();
   }
 

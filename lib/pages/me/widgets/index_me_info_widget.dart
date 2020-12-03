@@ -16,12 +16,15 @@ class IndexMeInfoWidget extends StatelessWidget {
           ),
           Expanded(
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: 24),
-                  height: 80,
-                  width: 80,
-                  color: AColors.success,
+                  height: 120,
+                  width: 120,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.asset('images/logo.png'),
+                  ),
                 ),
               ],
             ),

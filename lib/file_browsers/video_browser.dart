@@ -23,7 +23,7 @@ class _VideoBrowserState extends State<VideoBrowser> {
     super.initState();
     _controller = VideoPlayerController.file(File(widget.url))
       ..initialize().then((_) {
-        // _controller.play();
+        _controller.play();
         setState(() {});
       });
   }
