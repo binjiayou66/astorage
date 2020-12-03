@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ARouter {
@@ -9,7 +10,7 @@ class ARouter {
     if (page == null && route == null) return Future.error('Invalid Arguments');
     if (page != null)
       return Navigator.of(context).push(
-        MaterialPageRoute(builder: (ctx) => page),
+        CupertinoPageRoute(builder: (ctx) => page),
       );
     return Navigator.of(context).push(route);
   }
@@ -36,7 +37,7 @@ class ARouter {
     if (page == null && route == null) return Future.error('Invalid Arguments');
     if (page != null)
       return Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (ctx) => page),
+        CupertinoPageRoute(builder: (ctx) => page),
         result: result,
       );
     return Navigator.of(context).pushReplacement(route, result: result);
@@ -66,7 +67,7 @@ class ARouter {
     if (page == null && route == null) return Future.error('Invalid Arguments');
     if (page != null)
       return Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (ctx) => page),
+        CupertinoPageRoute(builder: (ctx) => page),
         predicate,
       );
     return Navigator.of(context).pushAndRemoveUntil(route, predicate);
