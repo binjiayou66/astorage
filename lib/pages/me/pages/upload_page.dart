@@ -162,7 +162,7 @@ class _UploadPageState extends State<UploadPage> {
       return;
     }
     try {
-      _server = await HttpServer.bind(_ipAddress, 8080);
+      _server = await HttpServer.bind(_ipAddress, _port);
       if (mounted) setState(() {});
     } catch (e) {
       AToast.showText('开启服务失败');
